@@ -11,9 +11,12 @@ public abstract class Player {
 
 	private ImageView playerImage;
 
+	private String movement;
+
 	public Player(String imgSource, int xPos, int yPos) throws Exception {
 		this.xPos = xPos;
 		this.yPos = yPos; 
+		this.movement = "STOPPED";
 	
 		this.playerImage = new ImageView(new Image(new FileInputStream(imgSource)));
 		this.playerImage.setPreserveRatio(true);
@@ -31,7 +34,7 @@ public abstract class Player {
 		return this.playerImage;
 	}
 
-	private void move(Map map, int xMove, int yMove) {
+	private void checknUpdate(Map map, int xMove, int yMove) {
 		// checks if there's path to move
 		// if so, updates player's positions
 		if(map.isPath(xMove, yMove)) {
@@ -41,22 +44,42 @@ public abstract class Player {
 		}
 	}
 
-	public void moveUp(Map map) {
-		move(map, this.xPos, this.yPos - 1);
+	public void move(Map map) {
+		switch(this.movement) {
+			case "UP":
+				checknUpdate(map, this.xPos, this.yPos - 1);
+				break;
+
+			case "DOWN":
+				checknUpdate(map, this.xPos, this.yPos + 1);
+				break;
+
+			case "RIGHT":
+				checknUpdate(map, this.xPos + 1, this.yPos);
+				break;
+
+			case "LEFT":
+				checknUpdate(map, this.xPos - 1, this.yPos);
+				break;
+
+			default:	//stopped
+				break;
+		}
 	}
 
-	public void moveDown(Map map) {
-		move(map, this.xPos, this.yPos + 1);
+	public void moveUp() {
+		this.movement = "UP";
 	}
 
-	public void moveRight(Map map) {
-		System.out.println(map.upa(this.xPos + 1, this.yPos));
-		move(map, this.xPos + 1, this.yPos);
+	public void moveDown() {
+		this.movement = "DOWN";
 	}
 
-	public void moveLeft(Map map) {
-		move(map, this.xPos - 1, this.yPos);
+	public void moveRight() {
+		this.movement = "RIGHT";
 	}
 
-
+	public void moveLeft() {
+		this.movement = "LEFT";
+	}
 }
