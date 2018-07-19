@@ -31,6 +31,7 @@ import javafx.scene.text.TextAlignment;
 import javafx.scene.shape.Rectangle;
 
 // timer used to keep player's movement
+// src : https://stackoverflow.com/questions/29962395/how-to-write-a-keylistener-for-javafx
 import javafx.animation.AnimationTimer;
 
 import engine.*;
@@ -110,10 +111,21 @@ public class Game extends Application implements EventHandler<KeyEvent> {
 				usrPacman = new Pacman(1, 1);
 				gameRoot.getChildren().add(usrPacman.getPlayerImage());
 
+				// The AnimationTimer's handle method is invoked once for each frame 
+				// that is rendered, on the FX Application Thread. 
+				// We should never block that thread (calling Thread.sleep(...)) here.
+				// src: https://stackoverflow.com/questions/30146560/how-to-change-animationtimer-speed
 				AnimationTimer timer = new AnimationTimer() {
+		            private long lastUpdate = 0;
+		           
+		            // a timestamp in nanoseconds is passed to the handle(...) method 
+		            // We want to throttle updates so they don't happen more than once every time
 		            @Override
 		            public void handle(long now) {
-			            usrPacman.move(newMap);
+		            	if(now - lastUpdate >= Preferences.NSPF) {	// nanoseconds per frame
+			            	usrPacman.move(newMap);
+			            	lastUpdate = now;
+			            }
 		            }
 		        };
 	        	timer.start();
