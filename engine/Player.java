@@ -44,6 +44,7 @@ public abstract class Player {
 		}
 	}
 
+	// method called synchronized with main Timer, in Game Class
 	public void move(Map map) {
 		switch(this.movement) {
 			case "UP":
@@ -67,19 +68,26 @@ public abstract class Player {
 		}
 	}
 
+	// Following methods updates player's movement status
+	// so we can keep moving without keeping the key pressed
+	// we need to update imageView rotation as well
 	public void moveUp() {
 		this.movement = "UP";
+		this.playerImage.setRotate(-90); 
 	}
 
 	public void moveDown() {
 		this.movement = "DOWN";
+		this.playerImage.setRotate(90); 
 	}
 
 	public void moveRight() {
 		this.movement = "RIGHT";
+		this.playerImage.setRotate(0); 
 	}
 
 	public void moveLeft() {
 		this.movement = "LEFT";
+		this.playerImage.setRotate(180); 
 	}
 }
