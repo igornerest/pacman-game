@@ -30,6 +30,9 @@ import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.scene.shape.Rectangle;
 
+// timer used to keep player's movement
+import javafx.animation.AnimationTimer;
+
 import engine.*;
 
 // To create a JavaFX appliction, we need to inherit the Application class
@@ -106,6 +109,14 @@ public class Game extends Application implements EventHandler<KeyEvent> {
 			if(!isRunning){
 				usrPacman = new Pacman(1, 1);
 				gameRoot.getChildren().add(usrPacman.getPlayerImage());
+
+				AnimationTimer timer = new AnimationTimer() {
+		            @Override
+		            public void handle(long now) {
+			            usrPacman.move(newMap);
+		            }
+		        };
+	        	timer.start();
 			}
 		} catch(Exception e) {
 			System.out.println(e);
@@ -164,19 +175,19 @@ public class Game extends Application implements EventHandler<KeyEvent> {
 	private void runningCommand(KeyEvent event) {
 		switch(event.getCode()) {
 			case DOWN :
-				usrPacman.moveDown(newMap);
+				usrPacman.moveDown();
 				break; 
 
 			case UP :
-				usrPacman.moveUp(newMap);
+				usrPacman.moveUp();
 				break;
 
 			case LEFT :
-				usrPacman.moveLeft(newMap);
+				usrPacman.moveLeft();
 				break; 
 
 			case RIGHT :
-				usrPacman.moveRight(newMap);
+				usrPacman.moveRight();
 				break;
 		}
 		
