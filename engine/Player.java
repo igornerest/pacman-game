@@ -31,23 +31,32 @@ public abstract class Player {
 		return this.playerImage;
 	}
 
-	public void moveUp() {
-		this.yPos --;
-		updateImagePosition();
+	private void move(Map map, int xMove, int yMove) {
+		// checks if there's path to move
+		// if so, updates player's positions
+		if(map.isPath(xMove, yMove)) {
+			this.xPos = xMove;
+			this.yPos= yMove;
+			updateImagePosition();
+		}
 	}
 
-	public void moveDown() {
-		this.yPos ++;
-		updateImagePosition();
+	public void moveUp(Map map) {
+		move(map, this.xPos, this.yPos - 1);
 	}
 
-	public void moveRight() {
-		this.xPos++;
-		updateImagePosition();
+	public void moveDown(Map map) {
+		move(map, this.xPos, this.yPos + 1);
 	}
 
-	public void moveLeft() {
-		this.xPos--;
-		updateImagePosition();
+	public void moveRight(Map map) {
+		System.out.println(map.upa(this.xPos + 1, this.yPos));
+		move(map, this.xPos + 1, this.yPos);
 	}
+
+	public void moveLeft(Map map) {
+		move(map, this.xPos - 1, this.yPos);
+	}
+
+
 }
