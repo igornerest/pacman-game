@@ -52,8 +52,10 @@ public class Map {
 		}
 	}
 
-	public boolean isBrick(int xPos, int yPos) {
-		if(map[xPos][yPos] instanceof Brick)
+	// With this method, we dont need to pass the Tile vector outside this class,
+	// to verify if it's possible to move
+	public boolean isPath(int xPos, int yPos) {
+		if(map[yPos][xPos] instanceof Path)
 			return true;
 		else 
 			return false;
@@ -62,6 +64,10 @@ public class Map {
 
 	public ObservableList getTilesList() {
 		return this.tilesList;
+	}
+
+	public String upa(int x, int y){
+		return "x: " + x + ", y: "  + y;
 	}
 	
 }
