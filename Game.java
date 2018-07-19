@@ -32,7 +32,7 @@ import javafx.scene.shape.Rectangle;
 
 import engine.*;
 
-// To create a JavaFX applictin, we need to inherit the Application class
+// To create a JavaFX appliction, we need to inherit the Application class
 public class Game extends Application implements EventHandler<KeyEvent> {
 
 	private static final int screenHeight = 500;
@@ -103,9 +103,10 @@ public class Game extends Application implements EventHandler<KeyEvent> {
 
 		Group gameRoot = new Group(newMap.getTilesList());
 		try{ 
-			if(!isRunning)
-				usrPacman = new Pacman(0, 0);
-			gameRoot.getChildren().add(usrPacman.getPlayerImage());
+			if(!isRunning){
+				usrPacman = new Pacman(1, 1);
+				gameRoot.getChildren().add(usrPacman.getPlayerImage());
+			}
 		} catch(Exception e) {
 			System.out.println(e);
 		}
@@ -163,19 +164,19 @@ public class Game extends Application implements EventHandler<KeyEvent> {
 	private void runningCommand(KeyEvent event) {
 		switch(event.getCode()) {
 			case DOWN :
-				usrPacman.moveDown();
+				usrPacman.moveDown(newMap);
 				break; 
 
 			case UP :
-				usrPacman.moveUp();
+				usrPacman.moveUp(newMap);
 				break;
 
 			case LEFT :
-				usrPacman.moveLeft();
+				usrPacman.moveLeft(newMap);
 				break; 
 
 			case RIGHT :
-				usrPacman.moveRight();
+				usrPacman.moveRight(newMap);
 				break;
 		}
 		
