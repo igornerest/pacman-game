@@ -18,37 +18,40 @@ public class Map {
 
 	private ObservableList tilesList = FXCollections.observableArrayList();
 
-	public void createMap(String mapString) throws Exception {
+	public Map(String mapString) {
 		File mapFile = new File(mapString);
-		Scanner sc = new Scanner(mapFile);
 
-		mapHeigth = Integer.parseInt(sc.nextLine());
-		mapWidth = Integer.parseInt(sc.nextLine());
-		map = new Tile[mapHeigth][mapWidth];
+		try (Scanner sc = new Scanner(mapFile)){
+			mapHeigth = Integer.parseInt(sc.nextLine());
+			mapWidth = Integer.parseInt(sc.nextLine());
+			map = new Tile[mapHeigth][mapWidth];
 
-		for (int i = 0; i < mapHeigth; i++) {
-			String tileString = sc.nextLine();
+			for (int i = 0; i < mapHeigth; i++) {
+				String tileString = sc.nextLine();
 
-			for (int j = 0; j < mapWidth; j++) {
-				switch(tileString.charAt(j)) {
-					case '0':
-						map[i][j] = new Path(true, j, i);
-						break;
+				for (int j = 0; j < mapWidth; j++) {
+					switch(tileString.charAt(j)) {
+						case '0':
+							map[i][j] = new Path(true, j, i);
+							break;
 
-					case '-':
-						map[i][j] = new Brick(j , i);
-						break;
+						case '-':
+							map[i][j] = new Brick(j , i);
+							break;
 
-					case ' ':
-						map[i][j] = new Path(false,  j, i);
-						break;
+						case ' ':
+							map[i][j] = new Path(false,  j, i);
+							break;
 
-					default:
-						System.out.println("Por favor, verifique se o arquivo do level esta correto");
-						break;
+						default:
+							System.out.println("Por favor, verifique se o arquivo do level esta correto");
+							break;
+					}
+					tilesList.addAll(map[i][j].getTileImageView());
 				}
-				tilesList.addAll(map[i][j].getTileImageView());
 			}
+		} catch (Exception e) {
+		    System.out.println(e);
 		}
 	}
 

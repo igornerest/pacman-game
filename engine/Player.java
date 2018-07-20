@@ -18,9 +18,13 @@ public abstract class Player {
 		this.yPos = yPos; 
 		this.movement = "STOPPED";
 	
-		this.playerImage = new ImageView(new Image(new FileInputStream(imgSource)));
-		this.playerImage.setPreserveRatio(true);
-		this.playerImage.setFitHeight(Preferences.TILE_SIZE);
+		try (FileInputStream fileStream = new FileInputStream(imgSource)) {
+			this.playerImage = new ImageView(new Image(fileStream));
+			this.playerImage.setPreserveRatio(true);
+			this.playerImage.setFitHeight(Preferences.TILE_SIZE);
+		} catch (Exception e) {
+			System.out.println(e);
+		}
 		updateImagePosition();
 	} 
 
