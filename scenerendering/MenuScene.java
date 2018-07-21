@@ -2,7 +2,6 @@ package scenerendering;
 
 import javafx.event.EventHandler;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.input.KeyCode;
 
 import javafx.scene.Group; 
 import javafx.scene.Scene; 
@@ -18,7 +17,7 @@ import javafx.scene.shape.Rectangle;
 
 import engine.Preferences;
 
-public class MenuScene implements EventHandler<KeyEvent>{
+public class MenuScene {
 	private Scene menuScene; // A scene represents the physical contents of a JavaFX application
 	
 	private Rectangle lvlSelector; // moves towards user options
@@ -26,7 +25,7 @@ public class MenuScene implements EventHandler<KeyEvent>{
 	private int selectedLevel = 0;
 	private int inOpPosition = 150;	// inicial Option position
 
-	public MenuScene(int screenWidth, int screenHeight) {
+	public MenuScene(int screenWidth, int screenHeight, EventHandler<KeyEvent> value) {
 		// a Group node is a collective node that contains A LIST of CHILDREN NODES
 		// this list is accessible through getChildren() method
 		// whenever the groups node is rendered, all its children are rendered in order
@@ -56,39 +55,28 @@ public class MenuScene implements EventHandler<KeyEvent>{
 		menuRoot.getChildren().add(lvlSelector);
 
 		menuScene = new Scene(menuRoot, screenWidth, screenHeight);
-		menuScene.setOnKeyPressed(this);
+		this.menuScene.setOnKeyPressed(value);
 		// whenever a key is pressed, it will look for a handle method within THIS CLASS
 	}
 
-	@Override 	// implementing method from interface 
-	public void handle(KeyEvent event) {
-		switch(event.getCode()) {
-			case DOWN :
-				selectedLevel++;	
-				if(selectedLevel == Preferences.N_LEVELS)
-					selectedLevel = 0;
+	public void selectUp() {
+		this.selectedLevel--;
+		if(this.selectedLevel == -1)
+			this.selectedLevel = Preferences.N_LEVELS - 1;
+		
+		this.lvlSelector.setY(inOpPosition - 15 + 30 * selectedLevel);
+	}
 
-				lvlSelector.setY(inOpPosition - 15 + 30 * selectedLevel);
-				break; 
+	public void selectDown() {
+		this.selectedLevel++;	
+		if(this.selectedLevel == Preferences.N_LEVELS)
+			this.selectedLevel = 0;
 
-			case UP :
-				selectedLevel--;
-				if(selectedLevel == -1)
-					selectedLevel = Preferences.N_LEVELS - 1;
-				
-				lvlSelector.setY(inOpPosition - 15 + 30 * selectedLevel);
-				break; 
+		this.lvlSelector.setY(inOpPosition - 15 + 30 * selectedLevel);
+	}
 
-			case ENTER :
-				try{
-					GameScene teste = new GameScene(400,500, selectedLevel);
-					teste.setScene((Stage) this.menuScene.getWindow());
-			
-				} catch(Exception e) {
-					System.out.println(e);
-				}
-				break; 
-		}
+	public int getSelectedLevel() {
+		return this.selectedLevel;
 	}
 
 	public void setScene(Stage stage) {
