@@ -13,7 +13,7 @@ public abstract class Player {
 
 	private String movement;
 
-	public Player(String imgSource, int xPos, int yPos) throws Exception {
+	public Player(String imgSource, int xPos, int yPos) {
 		this.xPos = xPos;
 		this.yPos = yPos; 
 		this.movement = "STOPPED";
