@@ -6,6 +6,9 @@
 // Images and icons were taken from
 // https://www.kisspng.com/free/pacman.html
 // http://www.classicgaming.cc/classics/pac-man/icons
+import javafx.event.EventHandler;
+import javafx.scene.input.KeyEvent;
+import javafx.scene.input.KeyCode;
 
 import javafx.application.Application;
 import javafx.scene.Group; 
@@ -16,22 +19,24 @@ import engine.*;
 import scenerendering.*;
 
 // To create a JavaFX appliction, we need to inherit the Application class
-public class Game extends Application{
-	private static final int screenHeight = 500;
-	private static final int screenWidth = 400;
+public class Game extends Application implements EventHandler<KeyEvent> {
+	private static final int SCREEN_HEIGHT = 500;
+	private static final int SCREEN_WIDTH = 400;
+
+	private boolean isRunning = false;
+
+	private MenuScene menuScene;
+	private GameScene gameScene;
+
+	private Stage window;
 
 	@Override // overwritting an Application class method
 	public void start(Stage primaryStage) throws Exception {
-		// a stage (that is a window) contains ALL THE OBJECTS of a JavaFX applicaton.
-		// it is represented by Stage class
-		// primaryStage, created by the plataform itself, is passed as argument in this method
-		try {
-			MenuScene teste = new MenuScene(screenWidth, screenHeight);
-			teste.setScene(primaryStage);
-
-		} catch(Exception e) {
-			System.out.println(e);
-		}
+		// a Stage (that is a window) contains ALL THE OBJECTS of a JavaFX applicaton.
+		window = primaryStage;
+			
+		menuScene = new MenuScene(SCREEN_WIDTH, SCREEN_HEIGHT, this);
+		menuScene.setScene(window);
 	}
 
 	public static void main(String[] args) {
@@ -43,6 +48,53 @@ public class Game extends Application{
 		// 2. init() method is called
 		// 3. the start() method is called
 		// 4. the launcher waits for the application to finish and calls the stop() method
+	}
+
+	@Override 	// implementing method from interface 
+	public void handle(KeyEvent event) {
+		if(isRunning) {
+			gameCommand(event);
+		} else {
+			menuCommand(event);
+		}
+	}
+
+	private void menuCommand(KeyEvent event) {
+		switch(event.getCode()) {
+			case DOWN :
+				menuScene.selectDown();
+				break; 
+
+			case UP :
+				menuScene.selectUp();
+				break; 
+
+			case ENTER :
+				isRunning = true;
+				gameScene = new GameScene(SCREEN_WIDTH, SCREEN_HEIGHT, this, menuScene.getSelectedLevel());
+				gameScene.setScene(window);
+				break; 
+		}
+	}
+
+	private void gameCommand(KeyEvent event) {
+		switch(event.getCode()) {
+			case DOWN :
+				gameScene.getPacman().moveDown();
+				break; 
+
+			case UP :
+				gameScene.getPacman().moveUp();
+				break;
+
+			case LEFT :
+				gameScene.getPacman().moveLeft();
+				break; 
+
+			case RIGHT :
+				gameScene.getPacman().moveRight();
+				break;
+		}
 	}
 
 }
