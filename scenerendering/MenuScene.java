@@ -5,14 +5,11 @@ import javafx.scene.input.KeyEvent;
 
 import javafx.scene.Group; 
 import javafx.scene.Scene; 
-import javafx.stage.Stage;
-
-import javafx.scene.image.Image;  
+import javafx.stage.Stage; 
 
 import javafx.scene.text.Text;
 import javafx.scene.text.Font;  
 import javafx.scene.text.TextAlignment;
-
 import javafx.scene.shape.Rectangle;
 
 import engine.Preferences;
@@ -56,7 +53,7 @@ public class MenuScene {
 
 		menuScene = new Scene(menuRoot, screenWidth, screenHeight);
 		this.menuScene.setOnKeyPressed(value);
-		// whenever a key is pressed, it will look for a handle method within THIS CLASS
+		// whenever a key is pressed, it will look for a handle method passed as argument
 	}
 
 	public void selectUp() {
@@ -81,9 +78,6 @@ public class MenuScene {
 
 	public void setScene(Stage stage) {
 		stage.setScene(this.menuScene); 
-		stage.setTitle("Pacman");
-		stage.getIcons().add(new Image(Preferences.ICON_SRC));
-		stage.setResizable(false);
 		stage.show();
 	}
 }

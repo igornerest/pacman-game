@@ -7,15 +7,7 @@ import javafx.scene.Group;
 import javafx.scene.Scene; 
 import javafx.stage.Stage;
 
-import javafx.scene.image.Image;  
-
-import javafx.scene.text.Text;
-import javafx.scene.text.Font;  
-import javafx.scene.text.TextAlignment;
-
-import javafx.scene.shape.Rectangle;
-
-import engine.*;
+import engine.*;	// my package
 
 // timer used to keep player's movement
 // src : https://stackoverflow.com/questions/29962395/how-to-write-a-keylistener-for-javafx
@@ -44,7 +36,6 @@ public class GameScene{
 		// src: https://stackoverflow.com/questions/30146560/how-to-change-animationtimer-speed
 		AnimationTimer timer = new AnimationTimer() {
             private long lastUpdate = 0;
-           
             // a timestamp in nanoseconds is passed to the handle(...) method 
             // We want to throttle updates so they don't happen more than once every time
             @Override
@@ -67,9 +58,6 @@ public class GameScene{
 
 	public void setScene(Stage stage) {
 		stage.setScene(this.gameScene);
-		stage.setTitle("Pacman - playing...");
-		stage.getIcons().add(new Image(Preferences.ICON_SRC));
-		stage.setResizable(false);
 		stage.show(); 
 	}
 }
