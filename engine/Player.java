@@ -13,11 +13,14 @@ public abstract class Player {
 
 	private String movement, nextMovement;
 
+	private boolean isAlive;
+
 	public Player(String imgSource, int xPos, int yPos) {
 		this.xPos = xPos;
 		this.yPos = yPos; 
 		this.movement = "STOPPED";
 		this.nextMovement = "STOPPED";
+		this.isAlive = true;
 
 		try (FileInputStream fileStream = new FileInputStream(imgSource)) {
 			this.playerImage = new ImageView(new Image(fileStream));
@@ -38,6 +41,22 @@ public abstract class Player {
 
 	public ImageView getPlayerImage() {
 		return this.playerImage;
+	}
+
+	public int getXPos() {
+		return this.xPos;
+	}
+
+	public int getYPos() {
+		return this.yPos;
+	}
+
+	public boolean isAlive() {
+		return this.isAlive;
+	}
+
+	public void setDeath() {
+		this.isAlive = false;
 	}
 
 	private boolean checknUpdate(Map map, int xMove, int yMove, int imgRotation) {
