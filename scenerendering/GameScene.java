@@ -28,7 +28,7 @@ public class GameScene{
 		gameRoot.getChildren().addAll(gameMap.getTilesList());
 
 		setPlayers();
-		for(int i = 0; i < 5; i++) 
+		for (int i = 0; i < 5; i++) 
 			gameRoot.getChildren().add(gamePlayers[i].getPlayerImage());
 	
 		// The AnimationTimer's handle method is invoked once for each frame 
@@ -41,7 +41,7 @@ public class GameScene{
             // We want to throttle updates so they don't happen more than once every time
             @Override
             public void handle(long now) {
-            	if(now - lastUpdate >= Preferences.NSPF) {	// nanoseconds per frame
+            	if (now - lastUpdate >= Preferences.NSPF) {	// nanoseconds per frame
 	            	movePlayers();
 	            	lastUpdate = now;
 	            }
@@ -54,8 +54,14 @@ public class GameScene{
 	}
 
 	private void movePlayers() {
-		for(int i = 0;  i < 5; i++)
-			this.gamePlayers[i].move(this.gameMap);
+		if (this.getPacman().isAlive()) {
+			for (int i = 0;  i < 5; i++) {
+				this.gamePlayers[i].move(this.gameMap);
+
+				if (gamePlayers[i] instanceof Ghost)
+					this.getPacman().verifyGhosts((Ghost) gamePlayers[i]);
+			}
+		}
 	}
 
 	private void setPlayers() {
@@ -67,8 +73,8 @@ public class GameScene{
 		gamePlayers[4] = new Ghost(1, 5, Preferences.RED_GHOST_SRC);
 	}
 
-	public Player getPacman() {
-		return this.gamePlayers[0];
+	public Pacman getPacman() {
+		return (Pacman) this.gamePlayers[0];
 	}
 
 	public void setScene(Stage stage) {
