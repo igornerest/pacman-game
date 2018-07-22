@@ -14,7 +14,9 @@ import javafx.application.Application;
 import javafx.scene.Group; 
 import javafx.scene.Scene; 
 import javafx.stage.Stage;
-// my packages
+
+import javafx.scene.image.Image; 
+
 import engine.*;
 import scenerendering.*;
 
@@ -30,10 +32,14 @@ public class Game extends Application implements EventHandler<KeyEvent> {
 
 	private Stage window;
 
-	@Override // overwritting an Application class method
+	@Override  // overwritting an Application class method
 	public void start(Stage primaryStage) throws Exception {
 		// a Stage (that is a window) contains ALL THE OBJECTS of a JavaFX applicaton.
+		// preparing the main stage (window)
 		window = primaryStage;
+		window.setTitle("Pacman");
+		window.getIcons().add(new Image(Preferences.ICON_SRC));
+		window.setResizable(false);
 			
 		menuScene = new MenuScene(SCREEN_WIDTH, SCREEN_HEIGHT, this);
 		menuScene.setScene(window);
@@ -50,7 +56,7 @@ public class Game extends Application implements EventHandler<KeyEvent> {
 		// 4. the launcher waits for the application to finish and calls the stop() method
 	}
 
-	@Override 	// implementing method from interface 
+	@Override  // implementing method from interface 
 	public void handle(KeyEvent event) {
 		if(isRunning) {
 			gameCommand(event);
@@ -80,21 +86,20 @@ public class Game extends Application implements EventHandler<KeyEvent> {
 	private void gameCommand(KeyEvent event) {
 		switch(event.getCode()) {
 			case DOWN :
-				gameScene.getPacman().moveDown();
+				gameScene.getPacman().setDown();
 				break; 
 
 			case UP :
-				gameScene.getPacman().moveUp();
+				gameScene.getPacman().setUp();
 				break;
 
 			case LEFT :
-				gameScene.getPacman().moveLeft();
+				gameScene.getPacman().setLeft();
 				break; 
 
 			case RIGHT :
-				gameScene.getPacman().moveRight();
+				gameScene.getPacman().setRight();
 				break;
 		}
 	}
-
 }
