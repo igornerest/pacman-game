@@ -54,7 +54,6 @@ public class Map {
 		    System.out.println(e);
 		}
 	}
-
 	// With this method, we dont need to pass the Tile vector outside this class,
 	// to verify if it's possible to move
 	public boolean isPath(int xPos, int yPos) {
@@ -64,13 +63,7 @@ public class Map {
 			return false;
 	}
 
-
 	public ObservableList getTilesList() {
 		return this.tilesList;
 	}
-
-	public String upa(int x, int y){
-		return "x: " + x + ", y: "  + y;
-	}
-	
 }

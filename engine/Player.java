@@ -47,9 +47,9 @@ public abstract class Player {
 			updateImagePosition();
 		}
 	}
-
-	// method called synchronized with main Timer, in Game Class
+	
 	public void move(Map map) {
+		// player moves everytime AnimationTimer ticks, according to player's movement status
 		switch(this.movement) {
 			case "UP":
 				checknUpdate(map, this.xPos, this.yPos - 1);
@@ -66,31 +66,26 @@ public abstract class Player {
 			case "LEFT":
 				checknUpdate(map, this.xPos - 1, this.yPos);
 				break;
-
-			default:	//stopped
-				break;
 		}
 	}
 
-	// Following methods updates player's movement status
-	// so we can keep moving without keeping the key pressed
-	// we need to update imageView rotation as well
-	public void moveUp() {
+	// Following methods update player's movement status
+	public void setUp() {
 		this.movement = "UP";
 		this.playerImage.setRotate(-90); 
 	}
 
-	public void moveDown() {
+	public void setDown() {
 		this.movement = "DOWN";
 		this.playerImage.setRotate(90); 
 	}
 
-	public void moveRight() {
+	public void setRight() {
 		this.movement = "RIGHT";
 		this.playerImage.setRotate(0); 
 	}
 
-	public void moveLeft() {
+	public void setLeft() {
 		this.movement = "LEFT";
 		this.playerImage.setRotate(180); 
 	}
