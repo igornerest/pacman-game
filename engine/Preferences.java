@@ -25,10 +25,10 @@ public abstract class Preferences {
 
 	public static final String LEVEL_SRC[] = new String[] {
 		"./maps/level1.txt",
-		"",
-		"",
-		"",
-		"",
+		"./maps/level2.txt",
+		"./maps/level3.txt",
+		"./maps/level4.txt",
+		"./maps/level5.txt",
 	};
 
 	public static final String LEVEL_NAME[] = new String[] {
