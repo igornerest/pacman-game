@@ -11,7 +11,7 @@ public abstract class Preferences {
 
 	public static final int TILE_SIZE = 20;	// size of each tile that composes the map
 
-	public static final long NSPF = 90000000;
+	public static final long NSPF = 150000000;
 
 	// source of each player's images
 	public static final String PACMAN_SRC 		= "./images/pacman.png";
