@@ -58,7 +58,7 @@ public class GameScene{
 			for (int i = 0;  i < 5; i++) {
 				this.gamePlayers[i].move(this.gameMap);
 
-				if (gamePlayers[i] instanceof Ghost)
+				//if (gamePlayers[i] instanceof Ghost)
 					this.getPacman().verifyGhosts((Ghost) gamePlayers[i]);
 			}
 		}
