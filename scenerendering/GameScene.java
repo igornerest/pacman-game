@@ -58,8 +58,10 @@ public class GameScene{
 			for (int i = 0;  i < 5; i++) {
 				this.gamePlayers[i].move(this.gameMap);
 
-				//if (gamePlayers[i] instanceof Ghost)
-					this.getPacman().verifyGhosts((Ghost) gamePlayers[i]);
+				if (gamePlayers[i] instanceof Ghost)
+					if(this.getPacman().touchedGhosts((Ghost) gamePlayers[i]))
+						this.getPacman().setDeath();
+
 			}
 		}
 	}
