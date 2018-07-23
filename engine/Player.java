@@ -51,6 +51,10 @@ public abstract class Player {
 		return this.yPos;
 	}
 
+	public String getMovement() {
+		return this.movement;
+	}
+
 	public boolean isAlive() {
 		return this.isAlive;
 	}
@@ -59,42 +63,58 @@ public abstract class Player {
 		this.isAlive = false;
 	}
 
-	private boolean checknUpdate(Map map, int xMove, int yMove, int imgRotation) {
-		// checks if there's path to move
-		// if so, updates player's positions
-		if(map.isPath(xMove, yMove)) {
-			this.xPos = xMove;
-			this.yPos= yMove;
-			updateImagePosition(imgRotation);
-			return true;
-		}
-		return false;
+	private void updatePosition(int xMove, int yMove, int imgRotation, String movement) {
+		this.xPos = xMove;
+		this.yPos= yMove;
+		this.movement = movement;
+		updateImagePosition(imgRotation);
 	}
 	
-	private boolean tryMovement(Map map, String movement) {
+	protected boolean canMove(Map map, String movement) {
 		switch(movement) {
 			case "UP":
-				return checknUpdate(map, this.xPos, this.yPos - 1, -90);
+				return map.isPath(this.xPos, this.yPos - 1);
 
 			case "DOWN":
-				return checknUpdate(map, this.xPos, this.yPos + 1, 90);
+				return map.isPath(this.xPos, this.yPos + 1);
 
 			case "RIGHT":
-				return checknUpdate(map, this.xPos + 1, this.yPos, 0);
+				return map.isPath(this.xPos + 1, this.yPos);
 
 			case "LEFT":
-				return checknUpdate(map, this.xPos - 1, this.yPos, 180);
+				return map.isPath(this.xPos - 1, this.yPos);
 
 			default: 
 				return false;
 		}
 	}
 
+	protected void makeMovement(String movement) {
+		switch(movement) {
+			case "UP":
+				updatePosition(this.xPos, this.yPos - 1, -90, movement);
+				break;
+
+			case "DOWN":
+				updatePosition(this.xPos, this.yPos + 1, 90, movement);
+				break;
+
+			case "RIGHT":
+				updatePosition(this.xPos + 1, this.yPos, 0, movement);
+				break;
+
+			case "LEFT":
+				updatePosition(this.xPos - 1, this.yPos, 180, movement);
+				break;
+		}
+	}
+
 	public void move(Map map) {
-		if(tryMovement(map, this.nextMovement))
-			this.movement = this.nextMovement;
-		else
-			tryMovement(map, this.movement);
+		if (canMove(map, this.nextMovement)) {
+			makeMovement(this.nextMovement);
+		} else if (canMove(map, this.movement)) {
+			makeMovement(this.movement);
+		}
 	}
 
 	// Following methods update player's movement status
