@@ -10,9 +10,10 @@ public class Pacman extends Player {
 		return this.getXPos() == ghost.getXPos() && this.getYPos() == ghost.getYPos();
 	}
 
-	public void verifyGhosts(Ghost ... ghosts) {
+	public boolean touchedGhosts(Ghost ... ghosts) {
 		for(Ghost ghost : ghosts)
 			if(this.hasSamePosition(ghost))
-				this.setDeath();
+				return true;
+		return false;
 	}
 }
