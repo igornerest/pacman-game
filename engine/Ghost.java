@@ -14,34 +14,22 @@ public class Ghost extends Player {
 		super.makeMovement(this.choosePath(map));
 	}
 
-	private String choosePath(Map map) {
+	private String sortMovement(Map map, String ... movements) {
 		int possibilities = 0;
-		if(canMove(map, this.getMovement()))
-			dirVector[possibilities++] = this.getMovement();
 
-		if (this.getMovement().equals("UP") || this.getMovement().equals("DOWN")) {
-			if(canMove(map, "LEFT"))
-				dirVector[possibilities++] = "LEFT";
-			if(canMove(map, "RIGHT"))
-				dirVector[possibilities++] = "RIGHT";
-
-		} else if (this.getMovement().equals("LEFT") || this.getMovement().equals("RIGHT")) {
-			if(canMove(map, "UP"))
-				dirVector[possibilities++] = "UP";
-			if(canMove(map, "DOWN"))
-				dirVector[possibilities++] = "DOWN";
-		} else if (this.getMovement().equals("STOPPED")) {
-			if(canMove(map, "LEFT"))
-				dirVector[possibilities++] = "LEFT";
-			if(canMove(map, "RIGHT"))
-				dirVector[possibilities++] = "RIGHT";
-			if(canMove(map, "UP"))
-				dirVector[possibilities++] = "UP";
-			if(canMove(map, "DOWN"))
-				dirVector[possibilities++] = "DOWN";
-
-		}
+		for (String movement : movements)
+			if(this.canMove(map, movement))
+				dirVector[possibilities++] = movement;
 
 		return dirVector[(int) (Math.random() * possibilities)];
+	}
+
+	private String choosePath(Map map) {
+		if(this.getMovement().equals("UP") || this.getMovement().equals("DOWN"))
+			return sortMovement(map, this.getMovement(), "LEFT", "RIGHT");
+		else if(this.getMovement().equals("LEFT") || this.getMovement().equals("RIGHT"))
+			return sortMovement(map, this.getMovement(), "UP", "DOWN");
+		else 
+			return sortMovement(map,this.getMovement(), "UP", "DOWN", "LEFT", "RIGHT");	
 	}
 }
