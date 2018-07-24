@@ -106,6 +106,10 @@ public abstract class Player {
 			case "LEFT":
 				updatePosition(this.xPos - 1, this.yPos, 180, movement);
 				break;
+
+			case "STOPPED":
+				this.movement = "STOPPED";
+				break;
 		}
 	}
 

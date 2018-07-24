@@ -18,10 +18,13 @@ public class Ghost extends Player {
 		int possibilities = 0;
 
 		for (String movement : movements)
-			if(this.canMove(map, movement))
+			if (this.canMove(map, movement))
 				dirVector[possibilities++] = movement;
 
-		return dirVector[(int) (Math.random() * possibilities)];
+		if(possibilities == 0)
+			return "STOPPED";
+		else	
+			return dirVector[(int) (Math.random() * possibilities)];
 	}
 
 	private String choosePath(Map map) {
@@ -30,6 +33,6 @@ public class Ghost extends Player {
 		else if(this.getMovement().equals("LEFT") || this.getMovement().equals("RIGHT"))
 			return sortMovement(map, this.getMovement(), "UP", "DOWN");
 		else 
-			return sortMovement(map,this.getMovement(), "UP", "DOWN", "LEFT", "RIGHT");	
+			return sortMovement(map, "UP", "DOWN", "LEFT", "RIGHT");	
 	}
 }
