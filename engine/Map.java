@@ -39,12 +39,8 @@ public class Map {
 							map[i][j] = new Brick(j , i);
 							break;
 
-						case ' ':
-							map[i][j] = new Path(false,  j, i);
-							break;
-
 						default:
-							System.out.println("Por favor, verifique se o arquivo do level esta correto");
+							map[i][j] = new Path(false,  j, i);
 							break;
 					}
 					tilesList.addAll(map[i][j].getTileImageView());
