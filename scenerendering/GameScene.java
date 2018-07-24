@@ -58,13 +58,13 @@ public class GameScene{
 
 	private void movePlayers() {
 		if (this.getPacman().isAlive()) {
-			for (int i = 0;  i < 5; i++) {
-				this.gamePlayers[i].move(this.gameMap);
-
-				if (gamePlayers[i] instanceof Ghost)
-					if(this.getPacman().touchedGhosts((Ghost) gamePlayers[i]))
-						this.getPacman().setDeath();
-
+			this.getPacman().move(this.gameMap);
+			
+			for (int i = 1;  i < 5; i++) {
+				if(this.getPacman().touchedGhosts((Ghost) gamePlayers[i]))
+					this.getPacman().setDeath();
+				else
+					this.gamePlayers[i].move(this.gameMap);
 			}
 		}
 	}
