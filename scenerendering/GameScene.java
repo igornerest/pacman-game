@@ -7,6 +7,9 @@ import javafx.scene.Group;
 import javafx.scene.Scene; 
 import javafx.stage.Stage;
 
+import java.io.File;		// for reading .txt document
+import java.util.Scanner;	// for getting user input/read .txt document
+
 import engine.*;	// my package
 
 // timer used to keep player's movement
@@ -27,7 +30,7 @@ public class GameScene{
 		gameMap = new Map(Preferences.LEVEL_SRC[selectedLevel]);
 		gameRoot.getChildren().addAll(gameMap.getTilesList());
 
-		setPlayers();
+		setPlayers(Preferences.LEVEL_SRC[selectedLevel]);
 		for (int i = 0; i < 5; i++) 
 			gameRoot.getChildren().add(gamePlayers[i].getPlayerImage());
 	
@@ -66,13 +69,45 @@ public class GameScene{
 		}
 	}
 
-	private void setPlayers() {
+	private void setPlayers(String mapString) {
+		int index = 1;
+
 		gamePlayers = new Player[5];
-		gamePlayers[0] = new Pacman(1,1);
-		gamePlayers[1] = new Ghost(1, 2, Preferences.YELLOW_GHOST_SRC);
-		gamePlayers[2] = new Ghost(1, 3, Preferences.BLUE_GHOST_SRC);
-		gamePlayers[3] = new Ghost(1, 4, Preferences.GREEN_GHOST_SRC);
-		gamePlayers[4] = new Ghost(1, 5, Preferences.RED_GHOST_SRC);
+
+		try (Scanner sc = new Scanner(new File(mapString))){
+			int mapHeigth = Integer.parseInt(sc.nextLine());
+			int mapWidth = Integer.parseInt(sc.nextLine());
+
+			for (int i = 0; i < mapHeigth; i++) {
+				String tileString = sc.nextLine();
+
+				for (int j = 0; j < mapWidth; j++) {
+					switch(tileString.charAt(j)) {
+						case 'P':
+							gamePlayers[0] = new Pacman(j, i);
+							break;
+
+						case 'R':
+							gamePlayers[index++] = new Ghost(j, i, Preferences.RED_GHOST_SRC);
+							break;
+
+						case 'G':
+							gamePlayers[index++] = new Ghost(j, i, Preferences.GREEN_GHOST_SRC);
+							break;
+
+						case 'B':
+							gamePlayers[index++] = new Ghost(j, i, Preferences.BLUE_GHOST_SRC);
+							break;
+
+						case 'Y':
+							gamePlayers[index++] = new Ghost(j, i, Preferences.YELLOW_GHOST_SRC);
+							break; 
+					}
+				}
+			}
+		} catch (Exception e) {
+		    System.out.println(e);
+		}
 	}
 
 	public Pacman getPacman() {
