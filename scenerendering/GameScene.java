@@ -23,6 +23,8 @@ public class GameScene{
 
 	private Player[] gamePlayers;
 
+	private boolean gameOver = false;
+
 	public GameScene(int screenWidth, int screenHeight, EventHandler<KeyEvent> value, int selectedLevel) {
 		Group gameRoot = new Group();
 		// according to the selected level, newMap creates all the imageView objects
@@ -57,10 +59,14 @@ public class GameScene{
 	}
 
 	private void movePlayers() {
-		if (this.getPacman().isAlive()) {
+		if (this.getPacman().isAlive() && this.gameMap.hasFood()) {
 			this.getPacman().move(this.gameMap);
 
-			((Path) this.gameMap.getTile(this.getPacman().getXPos(), this.getPacman().getYPos())).setCleared();
+			Path tmpTile = (Path) this.gameMap.getTile(this.getPacman().getXPos(), this.getPacman().getYPos());
+			if (tmpTile.hasFood()) {
+				tmpTile.setCleared();
+				this.gameMap.eatFood();
+			}
 			
 			for (int i = 1;  i < 5; i++) {
 				if(this.getPacman().touchedGhosts((Ghost) gamePlayers[i])) {
@@ -73,6 +79,13 @@ public class GameScene{
 				}
 			}
 		}
+		else {
+			this.gameOver = true;
+		}
+	}
+
+	public boolean gameOver() {
+		return this.gameOver;
 	}
 
 	private void setPlayers(String mapString) {
