@@ -28,6 +28,7 @@ public class Game extends Application implements EventHandler<KeyEvent> {
 	private boolean isRunning = false;
 
 	private MenuScene menuScene;
+
 	private GameScene gameScene;
 
 	private Stage window;
@@ -76,7 +77,7 @@ public class Game extends Application implements EventHandler<KeyEvent> {
 				break; 
 
 			case ENTER :
-				isRunning = true;
+				isRunning = true; // game starts and scene is changed!
 				gameScene = new GameScene(SCREEN_WIDTH, SCREEN_HEIGHT, this, menuScene.getSelectedLevel());
 				gameScene.setScene(window);
 				break; 
@@ -100,6 +101,13 @@ public class Game extends Application implements EventHandler<KeyEvent> {
 			case RIGHT :
 				gameScene.getPacman().setRight();
 				break;
+
+			case ENTER:
+				if(gameScene.gameOver()) {
+					isRunning = false;
+					menuScene = new MenuScene(SCREEN_WIDTH, SCREEN_HEIGHT, this);
+					menuScene.setScene(window);
+				}
 		}
 	}
 }
