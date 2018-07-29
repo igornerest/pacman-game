@@ -13,12 +13,14 @@ public class Map {
 
 	private int mapHeigth;
 	private int mapWidth;
+	private int foodQuantity;
 
 	private Tile[][] map;
 
 	private ObservableList tilesList = FXCollections.observableArrayList();
 
 	public Map(String mapString) {
+		foodQuantity = 0;
 		File mapFile = new File(mapString);
 
 		try (Scanner sc = new Scanner(mapFile)){
@@ -33,6 +35,7 @@ public class Map {
 					switch(tileString.charAt(j)) {
 						case '0':
 							map[i][j] = new Path(true, j, i);
+							foodQuantity++;
 							break;
 
 						case '-':
@@ -59,7 +62,22 @@ public class Map {
 			return false;
 	}
 
+	public Tile getTile(int xPos, int yPos) {
+		return map[yPos][xPos];
+	}
+
 	public ObservableList getTilesList() {
 		return this.tilesList;
+	}
+
+	public void eatFood() {
+		foodQuantity--;
+	}
+
+	public boolean hasFood() {
+		if (foodQuantity != 0)
+			return true;
+		else 
+			return false;
 	}
 }
