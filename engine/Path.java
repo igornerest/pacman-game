@@ -19,7 +19,11 @@ public class Path extends Tile {
 	}
 
 	public void setCleared() {
-		if(hasFood)
-			this.setTileImageView(Preferences.PATH_CLEARED_SRC);
+		hasFood = false;
+		this.setTileImageView(Preferences.PATH_CLEARED_SRC);
+	}
+
+	public boolean hasFood() {
+		return hasFood;
 	}
 }
