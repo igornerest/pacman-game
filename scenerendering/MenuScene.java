@@ -21,8 +21,6 @@ import javafx.scene.paint.ImagePattern;
 
 import javafx.scene.paint.Color; 
 
-import engine.Preferences;
-
 public class MenuScene implements IScene, EventHandler<KeyEvent>{
 	private Scene menuScene; // A scene represents the physical contents of a JavaFX application
 	
