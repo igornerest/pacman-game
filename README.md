@@ -1,2 +1,2 @@
-# pacman-game-javaFX
+# pacman-game
 pacman game using javaFX
