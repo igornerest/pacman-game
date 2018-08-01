@@ -1,26 +1,23 @@
 package engine;
 
-import java.io.FileInputStream;
-
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
+import scenerendering.ScreenException;
 
 public class Path extends Tile {
 	
-	boolean hasFood;
+	private boolean hasFood;
 
 	// Exception caught from Tile constructor
-	public Path(boolean hasFood, int x, int y) throws Exception {
-		super(Preferences.PATH_FOOD_SRC, x, y);
+	public Path(boolean hasFood, int x, int y) throws ScreenException {
+		super("./images/food.png", x, y);
 		this.hasFood = hasFood;
 
 		if(!this.hasFood)
 			this.setCleared();
 	}
 
-	public void setCleared() {
+	public void setCleared() throws ScreenException {
+		super.setTileImageView("./images/cleared.png");
 		hasFood = false;
-		this.setTileImageView(Preferences.PATH_CLEARED_SRC);
 	}
 
 	public boolean hasFood() {
