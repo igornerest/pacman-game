@@ -1,11 +1,13 @@
-package engine; 
+package engine;
+
+import scenerendering.ScreenException;
 
 public class Ghost extends Player {
 
 	private String dirVector[];
 
-	public Ghost(int xPos, int yPos, String imgSource) {
-		super(imgSource, xPos, yPos);
+	public Ghost(int xPos, int yPos, String imgSource) throws ScreenException {
+		super(xPos, yPos, imgSource);
 		dirVector = new String[5];
 	}
 
@@ -14,25 +16,35 @@ public class Ghost extends Player {
 		super.makeMovement(this.choosePath(map));
 	}
 
+	private String choosePath(Map map) {
+		switch(super.getMovement()) {
+			case "UP":
+				return sortMovement(map, super.getMovement(), "LEFT", "RIGHT");
+
+			case "DOWN":
+				return sortMovement(map, super.getMovement(), "LEFT", "RIGHT");
+
+			case "LEFT":
+				return sortMovement(map, super.getMovement(), "UP", "DOWN");
+
+			case "RIGHT":
+				return sortMovement(map, super.getMovement(), "UP", "DOWN");
+
+			default:
+				return sortMovement(map, "UP", "DOWN", "LEFT", "RIGHT");
+		}
+	}
+
 	private String sortMovement(Map map, String ... movements) {
 		int possibilities = 0;
 
 		for (String movement : movements)
-			if (this.canMove(map, movement))
+			if (super.canMove(map, movement))
 				dirVector[possibilities++] = movement;
 
 		if(possibilities == 0)
 			return "STOPPED";
 		else	
 			return dirVector[(int) (Math.random() * possibilities)];
-	}
-
-	private String choosePath(Map map) {
-		if(this.getMovement().equals("UP") || this.getMovement().equals("DOWN"))
-			return sortMovement(map, this.getMovement(), "LEFT", "RIGHT");
-		else if(this.getMovement().equals("LEFT") || this.getMovement().equals("RIGHT"))
-			return sortMovement(map, this.getMovement(), "UP", "DOWN");
-		else 
-			return sortMovement(map, "UP", "DOWN", "LEFT", "RIGHT");	
 	}
 }
