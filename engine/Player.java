@@ -1,46 +1,44 @@
 package engine;
 
-import java.io.FileInputStream;
-
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+
+import scenerendering.ScreenException;
 
 public abstract class Player {
 	private int xPos; 
 	private int yPos;
 
-	private ImageView playerImage;
+	private ImageView playerImageView;
 
-	private String movement, nextMovement;
+	private String movement;
+	private String nextMovement;
 
-	private boolean isAlive;
-
-	public Player(String imgSource, int xPos, int yPos) {
+	public Player(int xPos, int yPos, String imgSource) throws ScreenException {
 		this.xPos = xPos;
 		this.yPos = yPos; 
 		this.movement = "STOPPED";
 		this.nextMovement = "STOPPED";
-		this.isAlive = true;
 
-		try (FileInputStream fileStream = new FileInputStream(imgSource)) {
-			this.playerImage = new ImageView(new Image(fileStream));
-			this.playerImage.setPreserveRatio(true);
-			this.playerImage.setFitHeight(Preferences.TILE_SIZE);
-		} catch (Exception e) {
-			System.out.println(e);
-		}
+		this.playerImageView = new ImageView(new Image(imgSource));
+		if(this.playerImageView.getImage() == null)
+			throw new ScreenException("Error when loading Player Image");
+
+		this.playerImageView.setPreserveRatio(true);
+		this.playerImageView.setFitHeight(20);
+	
 		updateImagePosition(0);
 	} 
 
 	private void updateImagePosition(int imageRotation) {
 		// sets x and y ImageView positions according to current Player positions
-		this.playerImage.setY(this.yPos * Preferences.TILE_SIZE);
-		this.playerImage.setX(this.xPos * Preferences.TILE_SIZE);
-		this.playerImage.setRotate(imageRotation);
+		this.playerImageView.setY(this.yPos * 20);
+		this.playerImageView.setX(this.xPos * 20);
+		this.playerImageView.setRotate(imageRotation);
 	}
 
-	public ImageView getPlayerImage() {
-		return this.playerImage;
+	public ImageView getPlayerImageView() {
+		return this.playerImageView;
 	}
 
 	public int getXPos() {
@@ -55,20 +53,11 @@ public abstract class Player {
 		return this.movement;
 	}
 
-	public boolean isAlive() {
-		return this.isAlive;
+	public String getNextMovement() {
+		return this.nextMovement;
 	}
 
-	public void setDeath() {
-		this.isAlive = false;
-	}
-
-	private void updatePosition(int xMove, int yMove, int imgRotation, String movement) {
-		this.xPos = xMove;
-		this.yPos= yMove;
-		this.movement = movement;
-		updateImagePosition(imgRotation);
-	}
+	public abstract void move(Map map);
 	
 	protected boolean canMove(Map map, String movement) {
 		switch(movement) {
@@ -113,12 +102,11 @@ public abstract class Player {
 		}
 	}
 
-	public void move(Map map) {
-		if (canMove(map, this.nextMovement)) {
-			makeMovement(this.nextMovement);
-		} else if (canMove(map, this.movement)) {
-			makeMovement(this.movement);
-		}
+	private void updatePosition(int xMove, int yMove, int imgRotation, String movement) {
+		this.xPos = xMove;
+		this.yPos= yMove;
+		this.movement = movement;
+		updateImagePosition(imgRotation);
 	}
 
 	// Following methods update player's movement status
