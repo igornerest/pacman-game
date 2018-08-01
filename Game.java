@@ -1,49 +1,31 @@
 // Code by: Igor Neres Trindade
-// Some good references:
+// Good references:
 // https://www.tutorialspoint.com/javafx/javafx_application.htm
 // https://docs.oracle.com/javafx/2/ui_controls/jfxpub-ui_controls.htm
 
 // Images and icons were taken from
 // https://www.kisspng.com/free/pacman.html
-// http://www.classicgaming.cc/classics/pac-man/icons
-import javafx.event.EventHandler;
-import javafx.scene.input.KeyEvent;
-import javafx.scene.input.KeyCode;
-
 import javafx.application.Application;
-import javafx.scene.Group; 
-import javafx.scene.Scene; 
 import javafx.stage.Stage;
-
 import javafx.scene.image.Image; 
 
-import engine.*;
-import scenerendering.*;
+import scenerendering.ScreenSetting;
 
 // To create a JavaFX appliction, we need to inherit the Application class
-public class Game extends Application implements EventHandler<KeyEvent> {
-	private static final int SCREEN_HEIGHT = 500;
-	private static final int SCREEN_WIDTH = 400;
-
-	private boolean isRunning = false;
-
-	private MenuScene menuScene;
-
-	private GameScene gameScene;
-
-	private Stage window;
-
+public class Game extends Application {
+	
 	@Override  // overwritting an Application class method
-	public void start(Stage primaryStage) throws Exception {
+	public void start(Stage primaryStage) {
+		configureStage(primaryStage);
+		ScreenSetting.getInstance(primaryStage); // using Singleton pattern to set a Scene to this Stage
+	}
+
+	private void configureStage(Stage stage) { // preparing the main stage (window)
 		// a Stage (that is a window) contains ALL THE OBJECTS of a JavaFX applicaton.
-		// preparing the main stage (window)
-		window = primaryStage;
-		window.setTitle("Pacman");
-		window.getIcons().add(new Image(Preferences.ICON_SRC));
-		window.setResizable(false);
-			
-		menuScene = new MenuScene(SCREEN_WIDTH, SCREEN_HEIGHT, this);
-		menuScene.setScene(window);
+		stage.setTitle("Pacman");
+		stage.getIcons().add(new Image("./images/pacman-icon.png"));
+		stage.setResizable(false);
+		stage.show();
 	}
 
 	public static void main(String[] args) {
@@ -55,59 +37,5 @@ public class Game extends Application implements EventHandler<KeyEvent> {
 		// 2. init() method is called
 		// 3. the start() method is called
 		// 4. the launcher waits for the application to finish and calls the stop() method
-	}
-
-	@Override  // implementing method from interface 
-	public void handle(KeyEvent event) {
-		if(isRunning) {
-			gameCommand(event);
-		} else {
-			menuCommand(event);
-		}
-	}
-
-	private void menuCommand(KeyEvent event) {
-		switch(event.getCode()) {
-			case DOWN :
-				menuScene.selectDown();
-				break; 
-
-			case UP :
-				menuScene.selectUp();
-				break; 
-
-			case ENTER :
-				isRunning = true; // game starts and scene is changed!
-				gameScene = new GameScene(SCREEN_WIDTH, SCREEN_HEIGHT, this, menuScene.getSelectedLevel());
-				gameScene.setScene(window);
-				break; 
-		}
-	}
-
-	private void gameCommand(KeyEvent event) {
-		switch(event.getCode()) {
-			case DOWN :
-				gameScene.getPacman().setDown();
-				break; 
-
-			case UP :
-				gameScene.getPacman().setUp();
-				break;
-
-			case LEFT :
-				gameScene.getPacman().setLeft();
-				break; 
-
-			case RIGHT :
-				gameScene.getPacman().setRight();
-				break;
-
-			case ENTER:
-				if(gameScene.gameOver()) {
-					isRunning = false;
-					menuScene = new MenuScene(SCREEN_WIDTH, SCREEN_HEIGHT, this);
-					menuScene.setScene(window);
-				}
-		}
 	}
 }
