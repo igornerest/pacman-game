@@ -9,6 +9,8 @@ import javafx.collections.FXCollections;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
+import scenerendering.ScreenException;
+
 public class Map {
 
 	private int mapHeigth;
@@ -19,7 +21,7 @@ public class Map {
 
 	private ObservableList tilesList = FXCollections.observableArrayList();
 
-	public Map(String mapString) {
+	public Map(String mapString) throws ScreenException {
 		foodQuantity = 0;
 		File mapFile = new File(mapString);
 
@@ -50,7 +52,7 @@ public class Map {
 				}
 			}
 		} catch (Exception e) {
-		    System.out.println(e);
+		 	throw new ScreenException(e.toString());
 		}
 	}
 	// With this method, we dont need to pass the Tile vector outside this class,
